@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+    <div>
+        <ul class="navigation-bar">
+            <div class="menu-items">
+                <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png" alt="Spotify Logo">
+                <li class="navigation-bar-item"><a href="{{ url_for('profile') }}">Profile</a></li>
+                <li class="navigation-bar-item"><a class="active" href="{{ url_for('recommendations') }}">Recommendations</a></li>
+            </div>
+            <div class="actions">
+                <li class="navigation-bar-item" style="float:right"><a href="{{ url_for('logout') }}">Log out</a></li>
+            </div>
+        </ul>
+    </div>
+
+    <div class="content">
+        
+    </div>
+</body>
+</html>

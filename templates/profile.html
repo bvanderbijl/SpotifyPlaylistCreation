@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Profile</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+</head>
+<body>
+    <div>
+        <ul class="navigation-bar">
+            <div class="menu-items">
+                <img src="https://storage.googleapis.com/pr-newsroom-wp/1/2018/11/Spotify_Logo_RGB_Green.png" alt="Spotify Logo">
+                <li class="navigation-bar-item"><a class="active" href="{{ url_for('profile') }}">Profile</a></li>
+                <li class="navigation-bar-item"><a href="{{ url_for('recommendations') }}">Recommendations</a></li>
+            </div>
+            <div class="actions">
+                <li class="navigation-bar-item" style="float:right"><a href="{{ url_for('logout') }}">Log out</a></li>
+            </div>
+        </ul>
+    </div>
+
+    <div class="content">
+        <div class="user-profile card">
+            <h1>User Profile</h1>
+            
+            <div class="user-info">
+                <div class="list-item">
+                    <span class='list-label'><strong>Name:</strong></span> 
+                    <span>{{ user_data['display_name'] }}</span>
+                </div>
+                <div class="list-item">
+                    <span class='list-label'><strong>Email:</strong></span>
+                    <span> {{ user_data['email'] }}</span>
+                </div>
+                <div class="list-item">
+                    <span class='list-label'><strong>ID:</strong></span>
+                    <span> {{ user_data['id'] }}</span>
+                </div>
+                <div class="list-item">
+                    <span class='list-label'><strong>Country:</strong></span> 
+                    <span>{{ user_data['country'] }}</span>
+                </div>
+                <div class="list-item">
+                    <span class='list-label'><strong>Account type:</strong></span> 
+                    <span>{{ user_data['product'] }}</span>
+                </div>
+                <div class="list-item">
+                    <span class='list-label'><strong>Followers:</strong></span> 
+                    <span>{{ user_data['followers_total'] }}</span>
+                </div>
+
+                <form action="{{ user_data['url'] }}">
+                    <input class="profile-button" type="submit" value="Go to profile" />
+                </form>
+            </div>
+        </div>
+
+        <div class="popular-artists card">
+            <h1>Top Artists</h1>
+            {% for artist in top_artists %}
+                <div class="artist-item">
+                    <a href="{{ artist['url'] }}" class="artist-link">
+                        <span>{{ loop.index }}</span>
+                        <img src="{{ artist['image_url'] }}" class="artis-image">
+                        <span class="artist-name">{{ artist['name'] }}</span>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="popular-tracks card">
+            <h1>Top Tracks</h1>
+            {% for track in top_tracks %}
+                <div class="track-item">
+                    <a href="{{ track['url'] }}" class="track-link">
+                        <span>{{ loop.index }}</span>
+                        <img src="{{ track['image_url'] }}" class="track-image">
+                        <span class="track-title">{{ track['title'] }}</span>
+                        <span class="track-artists">{{ track['artists'] }}</span>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>

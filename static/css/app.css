@@ -1,0 +1,363 @@
+body {
+    position: relative;
+    font-family: 'Arial', sans-serif;
+    background-color: #f0f0f0;
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    display: block;
+}
+
+.content {
+    padding: 80px 2em 0 2em;
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    flex-wrap: wrap;
+}
+
+.navigation-bar {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    top: 0;
+    overflow: hidden;
+    background-color: #333;
+    width: 100%;
+    float: left;
+    position: fixed;
+    border-right:1px solid #bbb;
+    display: flex;
+    justify-content: space-between;
+    z-index: 999;
+}
+
+.navigation-bar-item:last-child {
+    border-right: none;
+}
+
+.navigation-bar-item a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+}
+  
+.navigation-bar-item a:hover:not(.active) {
+    background-color: #111;
+}
+
+.menu-items {
+    display: flex;
+}
+
+.menu-items > img {
+    object-fit: contain;
+    width: 100px;
+    text-align: center;
+    margin: 0 1em;
+}
+  
+.active {
+    background-color: #1DB954;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2em;
+}
+
+h1 {
+    color: #1DB954;
+}
+
+.user-profile {
+    width: 45%;
+}
+
+.popular-artists {
+    width: 45%;
+}
+
+.popular-tracks {
+    width: 100%;
+}
+
+.artis-image {
+    width: 50px;
+    height: 50px;
+}
+
+.user-info {
+    list-style-type: none;
+    padding: 0;
+    width: 400px;
+}
+.list-item {
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: row;
+}
+.list-item > span {
+    width: 50%;
+}
+.artis-image {
+    margin-left: 20px;
+}
+
+.artist-name {
+    margin-left: 40px;
+}
+
+.artist-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color:#333;
+}
+
+.artist-item:hover {
+    transform: scale(1.03);
+}
+
+.profile-button {
+    background-color: #1db954;
+    color: #fff;
+    cursor: pointer;
+    padding: 12px 28px;
+    border-radius: 4px;
+    border: 2px solid #1db954;
+    font-size: 16px;
+    text-align: center;
+}
+
+.profile-button:hover {
+    background-color: #fff;
+    color: #1db954;
+    border: 2px solid #1db954; /* Green */
+}
+
+.track-title {
+    margin-left: 40px;
+    width:500px
+}
+
+.track-link {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+    color:#333;
+}
+
+.track-image {
+    margin-left: 20px;
+    width: 50px;
+    height: 50px;
+}
+
+.track-item:hover {
+    transform: scale(1.03);
+}
+
+.filter-item {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.chosen-choices {
+    border-radius: 4px;
+}
+
+.filters {
+    display: flex;
+    flex-direction: column;
+}
+
+.select2-container--open .select2-dropdown--below {
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+}
+
+.select2-container--default .select2-results__option--highlighted.select2-results__option--selectable{
+    background-color: #1db954;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice {
+    background-color: #1db954;
+    border: 1px solid #1db954;
+    border-radius: 15px;
+    color: #fff;
+}
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove {
+    border-right: 1px solid #1db954;
+    color: #fff;
+}
+
+.select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover {
+    color: #1db954;
+    background-color: #fff;
+}
+
+.hideShowButton-container {
+    display: flex;
+    justify-content: center;
+}
+
+.hideShowButton {
+    font-family: 'Arial', sans-serif;
+    background-color: #fff;
+    border-color: #fff;;
+    border: none;
+    font-size: 16px;
+}
+
+.submit-button {
+    background-color: #1db954;
+    color: #fff;
+    cursor: pointer;
+    padding: 12px 28px;
+    border-radius: 4px;
+    border: 2px solid #1db954;
+    font-size: 16px;
+    text-align: center;
+}
+
+.submit-button:hover {
+    border: 2px solid #1db954;
+    background-color: #fff;
+    color: #1db954;
+}
+
+.submit-container {
+    margin-left: 20px;
+    margin-top: 10px;
+}
+
+.filter-container {
+    width: 30%;
+}
+
+.recommendations-container {
+    width: 62%;
+}
+
+.recommended-track-title {
+    margin-left: 40px;
+    width: 40%;
+}
+
+.recommended-track-image {
+    margin-left: 20px;
+    width: 40px;
+    height: 40px;
+}
+
+.recommended-track-item {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    padding: 4px 0px;
+    align-items: center;
+    font-size: 1em;
+    color:#333;
+}
+
+.recommended-track-item:hover {
+    background-color: #f0f0f0;
+}
+
+.recommended-track-item.selected {
+    background-color: #1db954; 
+    color:#fff;
+}
+
+.track-index {
+    width: 15px;
+    transition: opacity 0.1s ease;
+    margin-left: 4px;
+}
+
+.track-index.hidden {
+    opacity: 0;
+}
+
+.play-button {
+    position: absolute;
+    opacity: 0;
+    transition: opacity 0.1s ease;
+    text-align: center;
+    margin-left: 4px;
+    color: black;
+}
+
+.play-button.selected {
+    color: #fff;
+}
+
+.hovered {
+    opacity: 1;
+}
+
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+/* Style for the pop-up content */
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+}
+
+#playlistName {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+}
+
+#savePlaylistButton {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#savePlaylistButton:hover {
+    background-color: #45a049;
+}
+
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}

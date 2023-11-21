@@ -3,8 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>User Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+    <title>Recommendations</title>
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slider.css') }}">
+
+    <!-- Add this in the <head> section of your HTML -->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
 </head>
 <body>
     <div>
@@ -21,7 +31,60 @@
     </div>
 
     <div class="content">
-        
+        <div class="filter-container card">
+            <h1>Parameters</h1>
+
+            <div class="filters" id="filters">
+                <div class="length-filter filter-item">
+                    <div class="filter-title">
+                        <span>Playlist length:</span>
+                        <label for="trackSlider"><span id="trackCount">50</span></label>
+                    </div>
+                    <div class="track-slider">
+                        <input class="slider" type="range" id="trackSlider" min="10" max="100" value="50" step="10" oninput="updateTrackCount(this.value)">
+                    </div>
+                </div>
+                <div class="genre-filter filter-item">
+                    <div class="filter-title">
+                        <span>Genre(s):</span>
+                    </div>
+                    <select class="js-example-basic-multiple" name="states[]" multiple="multiple" id="genres">    
+                        {% for genre in genres['genres'] %}
+                            <option value="{{ genre }}">{{ genre }}</option>       
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="submit-container">
+                    <input class="submit-button" type="submit" name="submit" value="Submit" id="generatePlaylist"/>
+                </div>
+            </div>
+            <hr width="90%" size="1" align="middle" color="#f0f0f0" > 
+            <div class="hideShowButton-container">
+                <input onclick="hideShowElement('filters', 'hideShowButton')" type="button" value="Hide parameters" id="hideShowButton" class="hideShowButton"></input>
+            </div>
+
+        </div>
+
+        <div class="recommendations-container card">
+            <h1>Recommendations</h1>
+
+            <div id="recommendationsDiv"></div>
+
+        </div>
+
+        <div id="popupContainer" class="popup-container">
+            <div class="popup-content">
+                <span class="close-popup" onclick="closePopup()">&times;</span>
+                <h2>Save Playlist</h2>
+                <label for="playlistName">Playlist Name:</label>
+                <input type="text" id="playlistName" placeholder="Enter playlist name">
+                <button id="savePlaylistButton" onclick="savePlaylist()">Save Playlist</button>
+            </div>
+        </div>
     </div>
+    <script src="{{ url_for('static', filename='js/multiselect.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/slider.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/hidebutton.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/submitParameters.js') }}"></script>
 </body>
 </html>

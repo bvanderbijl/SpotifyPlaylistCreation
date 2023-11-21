@@ -1,9 +1,14 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, jsonify
+from flask_caching import Cache
 import time
+import json
 
 from spotifyClient.spotifyclient import *
 
+cache = Cache(config={'CACHE_TYPE': 'simple'})
+
 app = Flask(__name__)
+cache.init_app(app)
 
 def custom_login_function(client_id, client_secret):
     """
@@ -63,10 +68,19 @@ def filter_artist_fields(data):
              'url': artist['external_urls']['spotify']} for artist in data['items']]
 
 def filter_useful_track_fields(data):
-    return [{'title': track['name'], 
+    return [{'id': 'spotify:track:' + track['id'],
+             'title': track['name'], 
              'artists': ', '.join([artist['name'] for artist in track['artists']]),
              'image_url': track['album']['images'][0]['url'],
-             'url': track['external_urls']['spotify']} for track in data['items']]
+             'url': track['external_urls']['spotify']} for track in data]
+
+@cache.memoize(timeout=3600)
+def get_cached_results(method, *args):
+    if args:
+        return method(args[0])
+    else:
+        return method()
+    
 
 @app.route('/profile')
 def profile():
@@ -76,14 +90,14 @@ def profile():
         return redirect(url_for('validate_login'))
 
     # Retrieve user data
-    user_data = client.get_user_info()
+    user_data = get_cached_results(client.get_user_info)
     user_data = filter_profile_fields(user_data)
     
-    top_artists = client.get_top_items('artists')
+    top_artists = get_cached_results(client.get_top_items, 'artists')
     top_artists = filter_artist_fields(top_artists)
     
-    top_tracks = client.get_top_items('tracks')
-    top_tracks = filter_useful_track_fields(top_tracks)
+    top_tracks = get_cached_results(client.get_top_items, 'tracks')
+    top_tracks = filter_useful_track_fields(top_tracks['items'])
 
     # Pass user data to the template
     return render_template('profile.html', 
@@ -91,9 +105,30 @@ def profile():
                            top_artists=top_artists, 
                            top_tracks=top_tracks)
 
-@app.route('/recommendations')
+@app.route('/recommendations', methods=['GET', 'POST'])
 def recommendations():
-    return render_template('recommendations.html')
+    global client
+    
+    genres = get_cached_results(client.get_available_genres)
+    playlists = get_cached_results(client.get_user_playlists)
+    
+    return render_template('recommendations.html', genres=genres, playlists=playlists)
+
+@app.route('/generate_playlist', methods=['GET'])
+def generate_playlist():
+    global client 
+    
+    # Get parameters from the request
+    track_count = request.args.get('trackCount')
+    selected_genres = request.args.get('selectedGenres')
+
+    recommendations = client.get_track_recommendations(limit=track_count, 
+                                                       seed_genres=selected_genres)
+    
+    tracks = filter_useful_track_fields(recommendations['tracks'])
+    
+    # Return the result as JSON
+    return jsonify(tracks)
 
 @app.route('/logout')
 def logout():
@@ -101,11 +136,6 @@ def logout():
     # Simulate a logout (for demonstration purposes)
     del client._code
     return redirect(url_for('login'))
-
-@app.route('/home')
-def home():
-    global client
-    return client.get_user_info()
 
 if __name__ == '__main__':
     app.run(port=8888, debug=True)

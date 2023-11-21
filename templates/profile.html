@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>User Profile</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
 </head>
 <body>
     <div>
@@ -50,8 +50,8 @@
                     <span>{{ user_data['followers_total'] }}</span>
                 </div>
 
-                <form action="{{ user_data['url'] }}">
-                    <input class="profile-button" type="submit" value="Go to profile" />
+                <form action="{{ user_data['url'] }}" target="_blank">
+                    <input class="profile-button" type="submit" value="Go to profile" onclick=" window.open('{{ user_data['url'] }}','_blank')"/>
                 </form>
             </div>
         </div>
@@ -60,7 +60,7 @@
             <h1>Top Artists</h1>
             {% for artist in top_artists %}
                 <div class="artist-item">
-                    <a href="{{ artist['url'] }}" class="artist-link">
+                    <a href="{{ artist['url'] }}" class="artist-link" target="_blank">
                         <span>{{ loop.index }}</span>
                         <img src="{{ artist['image_url'] }}" class="artis-image">
                         <span class="artist-name">{{ artist['name'] }}</span>
@@ -73,7 +73,7 @@
             <h1>Top Tracks</h1>
             {% for track in top_tracks %}
                 <div class="track-item">
-                    <a href="{{ track['url'] }}" class="track-link">
+                    <a href="{{ track['url'] }}" class="track-link" target="_blank">
                         <span>{{ loop.index }}</span>
                         <img src="{{ track['image_url'] }}" class="track-image">
                         <span class="track-title">{{ track['title'] }}</span>

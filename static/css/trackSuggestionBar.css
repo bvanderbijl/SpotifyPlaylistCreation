@@ -1,0 +1,99 @@
+.track-seed {
+    position: relative;
+    display: inline-block;
+}
+
+#track-suggestions-list {
+    width: inherit;
+    position: relative;
+    left: 0;
+    z-index: 1;
+    display: none;
+    width: 100%;
+    border-radius: 2px;
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+.track-suggestion-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    background-color: #fff; /* Set the background color for each suggestion item */
+    border: 1px solid #ccc; /* Set the border for each suggestion item */
+}
+
+.track-suggestion-image {
+    width: 24px; /* Set the desired width for the image */
+    height: 24px; /* Set the desired height for the image */
+    margin-right: 8px; /* Adjust spacing between image and text */
+}
+
+.track-suggestion-item:hover {
+    background-color: #1db954;
+    color: #fff;
+}
+
+.track-filter {
+    background-color: white;
+    border: 1px solid #aaa;
+    border-radius: 4px;
+    cursor: text;
+    padding-bottom: 5px;
+    padding-right: 5px;
+    position: relative;
+    box-sizing: border-box;
+    min-height: 36px;
+    font-size: 16px;
+    width: 100%;
+}
+
+.recommended-tracks-container {
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.track-suggestion-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.track-suggestion-title {
+    font-size: 15px;
+}
+
+.track-suggestion-artists {
+    font-size: 10px;
+    color: grey;
+}
+
+.selected-track-suggestion:hover {
+    background-color: #fff;
+    color: #1db954;
+}
+
+#selected-track-suggestion-container {
+    margin-top: 10px;
+}
+
+.selected-track-suggestion {
+    background-color: #1db954;
+    border: 1px solid #1db954;
+    border-radius: 20px;
+    padding: 5px;
+    margin-right: 5px;
+    margin-bottom: 5px;
+    display: inline-flex;
+    align-items: center;
+    font-size: 12px;
+    color: #fff;
+}
+
+.selected-track-suggestion-text {
+    margin-right: 5px;
+}
+
+.remove-selected-track-suggestion {
+    cursor: pointer;
+    font-size: 15px;
+}

@@ -10,6 +10,10 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/slider.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/popupWindow.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/artistSuggestionBar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/trackSuggestionBar.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/minmaxslider.css') }}">
 
     <!-- Add this in the <head> section of your HTML -->
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -54,6 +58,95 @@
                         {% endfor %}
                     </select>
                 </div>
+
+                <div class="track-seed filter-item">
+                    <div class="filter-title">
+                        <span>Reference Track(s):</span>
+                    </div>
+                    <input class="track-filter" type="text" name="query" id="search-input-track" placeholder="Enter your search" autocomplete="off" oninput="getTrackSuggestions(this.value)">
+                    <div id="track-suggestions-list"></div>
+                    <div id="selected-track-suggestion-container"></div>
+                </div>
+
+                <div class="artist-seed filter-item">
+                    <div class="filter-title">
+                        <span>Reference Artist(s):</span>
+                    </div>
+                    <input class="artist-filter" type="text" name="query" id="search-input-artist" placeholder="Enter your search" autocomplete="off" oninput="getArtistSuggestions(this.value)">
+                    <div id="artist-suggestions-list"></div>
+                    <div id="selected-artist-suggestion-container"></div>
+                </div>
+
+                <div class="minmax-range-container filter-item">
+                    <div class="filter-title">
+                        <span>Acousticness:</span>
+                    </div>
+                    <div class="minmax-sliders-control acousticness-slider">
+                        <input class="fromSlider min-acousticness" id="fromSliderAcousticness" type="range" value="0" min="0" max="1" step="0.01"/>
+                        <input class="toSlider max-acousticness" id="toSliderAcousticness" type="range" value="100" min="0" max="1" step="0.01"/>
+                    </div>
+                </div>
+
+                <div class="minmax-range-container filter-item">
+                    <div class="filter-title">
+                        <span>Danceability:</span>
+                    </div>
+                    <div class="minmax-sliders-control danceability-slider">
+                        <input class="fromSlider min-danceability" id="fromSliderDanceability" type="range" value="0" min="0" max="1" step="0.01"/>
+                        <input class="toSlider max-danceability" id="toSliderDanceability" type="range" value="100" min="0" max="1" step="0.01"/>
+                    </div>
+                </div>
+
+                <div class="minmax-range-container filter-item">
+                    <div class="filter-title">
+                        <span>Energy:</span>
+                    </div>
+                    <div class="minmax-sliders-control energy-slider">
+                        <input class="fromSlider min-energy" id="fromSliderEnergy" type="range" value="0" min="0" max="1" step="0.01"/>
+                        <input class="toSlider max-energy" id="toSliderEnergy" type="range" value="100" min="0" max="1" step="0.01"/>
+                    </div>
+                </div>
+
+                <div class="minmax-range-container filter-item">
+                    <div class="filter-title">
+                        <span>Instrumentalness:</span>
+                    </div>
+                    <div class="minmax-sliders-control instrumentalness-slider">
+                        <input class="fromSlider min-instrumentalness" id="fromSliderInstrumentalness" type="range" value="0" min="0" max="1" step="0.01"/>
+                        <input class="toSlider max-instrumentalness" id="toSliderInstrumentalness" type="range" value="100" min="0" max="1" step="0.01"/>
+                    </div>
+                </div>
+
+                <div class="minmax-range-container filter-item">
+                    <div class="filter-title">
+                        <span>Liveness:</span>
+                    </div>
+                    <div class="minmax-sliders-control liveness-slider">
+                        <input class="fromSlider min-liveness" id="fromSliderLiveness" type="range" value="0" min="0" max="1" step="0.01"/>
+                        <input class="toSlider max-liveness" id="toSliderLiveness" type="range" value="100" min="0" max="1" step="0.01"/>
+                    </div>
+                </div>
+
+                <div class="minmax-range-container filter-item">
+                    <div class="filter-title">
+                        <span>Popularity:</span>
+                    </div>
+                    <div class="minmax-sliders-control popularity-slider">
+                        <input class="fromSlider min-popularity" id="fromSliderPopularity" type="range" value="0" min="0" max="100" step="1"/>
+                        <input class="toSlider max-popularity" id="toSliderPopularity" type="range" value="100" min="0" max="100" step="1"/>
+                    </div>
+                </div>
+
+                <div class="minmax-range-container filter-item">
+                    <div class="filter-title">
+                        <span>Valence:</span>
+                    </div>
+                    <div class="minmax-sliders-control valence-slider">
+                        <input class="fromSlider min-valence" id="fromSliderValence" type="range" value="0" min="0" max="1" step="0.01"/>
+                        <input class="toSlider max-valence" id="toSliderValence" type="range" value="100" min="0" max="1" step="0.01"/>
+                    </div>
+                </div>
+
                 <div class="submit-container">
                     <input class="submit-button" type="submit" name="submit" value="Submit" id="generatePlaylist"/>
                 </div>
@@ -76,9 +169,30 @@
             <div class="popup-content">
                 <span class="close-popup" onclick="closePopup()">&times;</span>
                 <h2>Save Playlist</h2>
-                <label for="playlistName">Playlist Name:</label>
-                <input type="text" id="playlistName" placeholder="Enter playlist name">
-                <button id="savePlaylistButton" onclick="savePlaylist()">Save Playlist</button>
+                
+                <div class="popup-option-container">
+                    <label for="playlistChoice" class="popup-label">Choose an option:</label>
+                    <select id="playlistChoice" class="popup-selector" onchange="togglePlaylistFields()">
+                        <option value="existing">Add to Existing Playlist</option>
+                        <option value="new">Create New Playlist</option>
+                    </select>
+                </div> 
+
+                <div id="existingPlaylistFields" class="popup-option-container">
+                    <label for="existingPlaylist" class="popup-label">Select Existing Playlist:</label>
+                    <select id="existingPlaylist" class="popup-selector">
+                        {% for playlist in playlists['items'] %}
+                            <option value="{{ playlist['id'] }}">{{ playlist['name'] }}</option>       
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div id="newPlaylistFields" class="popup-option-container" style="display: none;">
+                    <label for="newPlaylist" class="popup-label">New Playlist Title:</label>
+                    <input type="text" id="newPlaylist" placeholder="Enter playlist title" class="popup-selector">
+                </div>
+
+                <button id="savePlaylistButton" onclick="savePlaylist()">Save</button>
             </div>
         </div>
     </div>
@@ -86,5 +200,10 @@
     <script src="{{ url_for('static', filename='js/slider.js') }}"></script>
     <script src="{{ url_for('static', filename='js/hidebutton.js') }}"></script>
     <script src="{{ url_for('static', filename='js/submitParameters.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popupWindow.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/trackSuggestions.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/artistSuggestions.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/minmaxslider.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/parameterLimit.js') }}"></script>
 </body>
 </html>

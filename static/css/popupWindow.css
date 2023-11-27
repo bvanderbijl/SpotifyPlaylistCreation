@@ -1,0 +1,119 @@
+/* Style for the pop-up container */
+.popup-container {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0,0,0,0.5);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    height: 100%;
+}
+
+/* Style for the pop-up content */
+.popup-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    width: 45%;
+}
+
+#playlistName {
+    width: 100%;
+    margin-bottom: 10px;
+    padding: 8px;
+}
+
+#savePlaylistButton {
+    background-color: #1db954;
+    color: #fff;
+    padding: 10px;
+    border: 2px solid #1db954;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#savePlaylistButton:hover {
+    background-color: #fff;
+    color: #1db954;
+    border: 2px solid #1db954;
+}
+
+/* Style for the pop-up content */
+.popup-content {
+    position: relative;
+}
+
+/* Style for the close button */
+.close-popup {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    cursor: pointer;
+}
+
+/* Style for the form elements */
+.popup-label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.popup-selector {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+/* Style for the dropdown toggle */
+.select-toggle {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    cursor: pointer;
+}
+
+/* Style for the dropdown menu */
+.select-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    z-index: 1;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background-color: #fff;
+}
+
+/* Style for dropdown options */
+.select-option {
+    padding: 8px;
+    cursor: pointer;
+}
+
+/* Hover effect for dropdown options */
+.select-option:hover {
+    background-color: #f2f2f2;
+}
+
+.popup-option-container{
+    padding: 5px;
+}
+
+#newPlaylist {
+    width: 97%;
+}

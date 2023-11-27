@@ -1,17 +1,67 @@
 $(document).ready(function() {
+    function getSeedTracks() {
+        const selectedSuggestionIds = [];
+    
+        $('.selected-track-suggestion').each(function () {
+            const suggestionUri = $(this).data('id');
+            var suggestionId = suggestionUri.split(':');
+            suggestionId = suggestionId[suggestionId.length - 1];
+            
+            selectedSuggestionIds.push(suggestionId);
+        });
+    
+        return selectedSuggestionIds.join(',');
+    }
+
+    function getSeedArtists() {
+        const selectedSuggestionIds = [];
+    
+        $('.selected-artist-suggestion').each(function () {
+            const suggestionUri = $(this).data('id');
+            var suggestionId = suggestionUri.split(':');
+            suggestionId = suggestionId[suggestionId.length - 1];
+            
+            selectedSuggestionIds.push(suggestionId);
+        });
+    
+        return selectedSuggestionIds.join(',');
+    }
+
     $('#generatePlaylist').on('click', function() {
         // Get parameter values from input fields
-        var trackCount = $('#trackSlider').val();
+        var parameters = {'limit': $('#trackSlider').val()};
 
-        var genres = document.getElementById("genres");
-        var selectedGenres = prepareGenres(genres)
+        var selectedGenres = getSeedGenres()
+        if (selectedGenres.length > 0) {
+            parameters['seed_genres'] = selectedGenres;
+        };
+
+        var selectedTracks = getSeedTracks()
+        if (selectedTracks.length > 0) {
+            parameters['seed_tracks'] = selectedTracks;
+        }
+
+        var selectedArtists = getSeedArtists()
+        if (selectedArtists.length > 0) {
+            parameters['seed_artists'] = selectedArtists;
+        }
+
+        parameter_types = ['acousticness', 'danceability', 'energy', 'instrumentalness', 'liveness',
+                           'popularity', 'valence'];
+
+        parameter_types.forEach(function (parameter) {
+            param_id_name = parameter.charAt(0).toUpperCase() + parameter.slice(1);
+
+            parameters[`min_${parameter}`] = document.querySelector(`#fromSlider${param_id_name}`).value;
+            parameters[`max_${parameter}`] = document.querySelector(`#toSlider${param_id_name}`).value;
+        });
 
         // Make an asynchronous request to the server with parameters
         $.ajax({
             type: 'GET',
             url: '/generate_playlist',
             contentType: 'application/json;charset=UTF-8',
-            data: {'trackCount': trackCount, 'selectedGenres': selectedGenres},
+            data: parameters,
             success: function(data) {
                 // Update the resultDiv with the returned data
                 updateRecommendations(data);
@@ -19,7 +69,9 @@ $(document).ready(function() {
         });
     });
 
-    function prepareGenres(genres){
+    function getSeedGenres(){
+        var genres = document.getElementById("genres");
+
         var selectedGenres = [];
         for (var i = 0; i < genres.options.length; i++) {
             if (genres.options[i].selected) {
@@ -36,24 +88,29 @@ $(document).ready(function() {
         // Clear previous results
         $('#recommendationsDiv').empty();
 
-        $('#recommendationsDiv').append('<button id="selectAllButton">Select All</button>');
-        $('#recommendationsDiv').append('<button id="saveButton">Save</button>');
-        $('#recommendationsDiv').append('<button id="refreshButton" style="display: none;">Refresh</button>')
-        $('#recommendationsDiv').append('<button id="deleteButton" style="display: none;">Delete</button>')
+        $('#recommendationsDiv').append(`
+        <div class="recommended-track-buttons">
+        <button class="submit-button" id="selectAllButton">Select All</button>
+        <button class="submit-button" id="saveButton">Save</button>
+        <button class="submit-button" id="refreshButton" style="display: none;">Refresh</button>
+        <button class="submit-button" id="deleteButton" style="display: none;">Delete</button>
+        </div>
+        `)
+
+        var html = '<div class="recommended-tracks-container">'
 
         // Iterate through the data and append it to the resultDiv
         data.forEach(function(track, index) {
-            var html = '<div class="recommended-track-item" data-index="' + index + '" data-id="' + track.id + '">';
+            html += '<div class="recommended-track-item" data-index="' + index + '" data-id="' + track.id + '">';
             html += '<span class="track-index">' + (index + 1) + '</span>';
             html += '<img src="' + track.image_url + '" alt="Track Image" class="recommended-track-image">';
             html += '<span class="recommended-track-title">' + track.title + '</span>';
             html += '<span class="recommended-track-artist">' + track.artists + '</span>';
             html += '<a href="' + track.url + '" target="_blank" class="play-button"><i style="font-size:20px" class="fa">&#xf04b;</i></a>';
             html += '</div>';
-
-            // Append the HTML to the resultDiv
-            $('#recommendationsDiv').append(html);
         });
+        html += '</div>'
+        $('#recommendationsDiv').append(html);
 
         $('.recommended-track-item').hover(
             function() {
@@ -112,28 +169,18 @@ $(document).ready(function() {
             $('#popupContainer').hide();
         };
 
-        function getSelectedTrackIds() {
-            var selectedData = [];
-            $('.recommended-track-item.selected').each(function() {
-                var id = $(this).data('id');
-                selectedData.push(id);
-            });
-            return selectedData;
-        }
-
         $('#refreshButton').click(function() {
             var selectedTracks = $('.recommended-track-item.selected');
             
             var trackCount = $('#trackSlider').val();
-            var genres = document.getElementById("genres");
-            var selectedGenres = prepareGenres(genres)
+            var selectedGenres = getSeedGenres();
 
             // Make an asynchronous request to the server with parameters
             $.ajax({
                 type: 'GET',
                 url: '/generate_playlist',
                 contentType: 'application/json;charset=UTF-8',
-                data: {'trackCount': trackCount, 'selectedGenres': selectedGenres},
+                data: {'limit': trackCount, 'seed_genres': selectedGenres},
                 success: function(data) {
                     // Update the resultDiv with the returned data
                     updateSelectedRows(selectedTracks, data);
@@ -159,11 +206,8 @@ $(document).ready(function() {
         $('#deleteButton').click(function() {
             var selectedTracks = $('.recommended-track-item.selected');
 
-            selectedTracks.each(function(element) {
-                element.remove()
-            })
-
-            updateTrackIndices()
+            selectedTracks.remove();
+            updateTrackIndices();
 
             $('#refreshButton').hide();
             $('#deleteButton').hide();

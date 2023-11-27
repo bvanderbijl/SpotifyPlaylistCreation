@@ -17,7 +17,7 @@ This Flask web application allows users to generate and save Spotify playlists b
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-username/flask-spotify-playlist-generator.git
+   git clone https://github.com/bvanderbijl/SpotifyPlaylistCreation
    cd SpotifyPlaylistCreation
 
 2. **Install Dependencies**

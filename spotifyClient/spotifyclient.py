@@ -7,8 +7,6 @@ from datetime import datetime, timedelta, date
 
 from urllib.parse import urlencode
 
-from spotifyClient.track import Track
-
 
 class SpotifyClient:
     """SpotifyClient performs operations using the Spotify API."""

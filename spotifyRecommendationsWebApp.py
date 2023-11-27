@@ -53,7 +53,7 @@ def callback():
     
     if 'code' in query_params.keys():
         client.save_code(query_params['code'])
-        return "Data received successfully, this tab can be closed"
+        return redirect(url_for('profile'))
     else:
         return "Could not retrieve the required information"
 

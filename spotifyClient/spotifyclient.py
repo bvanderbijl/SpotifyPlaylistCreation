@@ -48,8 +48,10 @@ class SpotifyClient:
         self._bearer_token = body['access_token']
         
         return body
-  
-    def authorize(self):
+    
+    def get_authorization_url(self):
+        url = "https://accounts.spotify.com/authorize?"
+        
         state = ''.join(random.choice(string.ascii_uppercase + string.ascii_lowercase + string.digits) for _ in range(16))
         scope = ' '.join(self.USER_SCOPE)
         
@@ -60,7 +62,12 @@ class SpotifyClient:
             'scope': scope,
             'state': state
         })
-        webbrowser.open("https://accounts.spotify.com/authorize?" + auth_headers)
+        
+        return url + auth_headers
+  
+    def authorize(self):
+        url = self.get_authorization_url()
+        webbrowser.open(url)
     
     def save_code(self, code):
         self._code = code

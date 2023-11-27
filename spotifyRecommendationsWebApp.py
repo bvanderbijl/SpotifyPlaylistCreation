@@ -14,40 +14,22 @@ cache.init_app(app)
 def page_not_found(e):
     return redirect(url_for('profile'))
 
-def custom_login_function(client_id, client_secret):
-    """
-    Custom login function that checks if the provided credentials are valid.
-    Replace this with your actual login logic.
-    """
-    global client
-    
-    client.authorize()
-    time.sleep(5)
-    
-    return hasattr(client, "_code")
-
-@app.route('/')
+@app.route('/', methods=['GET', 'POST'])
 def login():
-    return render_template('login.html')
-
-@app.route('/validate_login', methods=['POST'])
-def validate_login():
     global client
     
-    client_id = request.form.get('client_id')
-    client_secret = request.form.get('client_secret')
+    if request.method == 'POST':
+        client_id = request.form['client_id']
+        client_secret = request.form['client_secret']
+        
+        client = SpotifyClient(client_id, client_secret)
+        
+        return redirect(client.get_authorization_url())
     
-    client = SpotifyClient(client_id, client_secret)
-
-    if custom_login_function(client_id, client_secret):
-        # Redirect to the application home page or some other route
-        return redirect(url_for('profile'))
-    else:
-        return render_template('login.html', error='Invalid credentials')
+    return render_template('login.html')
     
 @app.route('/callback/', methods=['GET'])
 def callback():
-    global client
     # Capture query parameters
     query_params = request.args.to_dict()
     
@@ -55,7 +37,7 @@ def callback():
         client.save_code(query_params['code'])
         return redirect(url_for('profile'))
     else:
-        return "Could not retrieve the required information"
+        return redirect(url_for('profile'))
 
 def filter_profile_fields(data):
     return {'display_name': data['display_name'],

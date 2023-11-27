@@ -37,7 +37,7 @@ def callback():
         client.save_code(query_params['code'])
         return redirect(url_for('profile'))
     else:
-        return redirect(url_for('profile'))
+        return render_template('login.html', error='Invalid credentials')
 
 def filter_profile_fields(data):
     return {'display_name': data['display_name'],

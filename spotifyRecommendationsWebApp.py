@@ -1,11 +1,20 @@
 from flask import Flask, render_template, request, redirect, url_for, jsonify
 from flask_caching import Cache
-import time
 import json
+
+import os
+from dotenv import load_dotenv
 
 from spotifyClient.spotifyclient import *
 
 cache = Cache(config={'CACHE_TYPE': 'simple'})
+
+load_dotenv()
+
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
+
+client = SpotifyClient(CLIENT_ID, CLIENT_SECRET)
 
 app = Flask(__name__)
 cache.init_app(app)
@@ -17,6 +26,11 @@ def page_not_found(e):
 @app.route('/', methods=['GET', 'POST'])
 def login():
     global client
+    
+    if not hasattr(client, '_code'):
+        return redirect(client.get_authorization_url())
+    else:
+        return redirect(url_for('profile'))
     
     if request.method == 'POST':
         client_id = request.form['client_id']

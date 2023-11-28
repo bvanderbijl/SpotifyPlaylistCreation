@@ -28,7 +28,8 @@ This Flask web application allows users to generate and save Spotify playlists b
 3. **Set Up Spotify API**
 
 - Create a Spotify Developer account at https://developer.spotify.com/.
-- Create an app in your developer environment with the Redirect URI: http://localhost:8888/callback/
+- Create an app in your developer environment with the Redirect URI: http://localhost:8888/callback/.
+- Store the client id and the client secret in a .env file in the same format as in the .env.example.
 
 5. **Run the Application**
 
@@ -36,15 +37,12 @@ This Flask web application allows users to generate and save Spotify playlists b
    python spotifyRecommendationsWebApp.py
 
 7. **Visit app and Login**
-Visit https://localhost:8888 in your browser and login with your client id and clients secret from your Spotify developer app.
+Visit https://localhost:8888 in your browser andauthenticate your Spotify account.
 
 ## Usage
 
 - Visit the web app in your browser on https://localhost:8888.
-- Login with your client id and clients secret from your Spotify developer app
 - Authenticate with your Spotify account.
 - Go to the Recommendations page.
 - Adjust the parameters to your preferences.
 - Generate and save your personalized playlist.
-
-  

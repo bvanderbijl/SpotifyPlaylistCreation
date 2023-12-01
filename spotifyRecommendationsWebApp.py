@@ -129,8 +129,6 @@ def generate_playlist():
     global client 
     
     kwargs = {key: value for key, value in request.args.items()}
-
-
     recommendations = client.get_track_recommendations(**kwargs)
     
     tracks = filter_track_fields(recommendations['tracks'])

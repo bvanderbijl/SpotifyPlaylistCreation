@@ -23,8 +23,9 @@ $(document).ready(function() {
 
         if (playlistChoice === 'existing') {
             playlistId = $('#existingPlaylist').val();
+            var playlistUri = $('#existingPlaylist').getAttribute('data-uri');
 
-            populate_playlist(playlistId)
+            populate_playlist(playlistId, playlistUri)
         } else if (playlistChoice === 'new') {
             playlistName = $('#newPlaylist').val();
 
@@ -40,8 +41,9 @@ $(document).ready(function() {
                 contentType: 'application/json;charset=UTF-8',
                 data: {'playlistTitle': playlistName},
                 success: function(response) {
-                    playlistId = response['id']
-                    populate_playlist(playlistId)
+                    var playlistId = response['id']
+                    var playlistUri = response['external_urls']['spotify']
+                    populate_playlist(playlistId, playlistUri)
                 }
             });
         }
@@ -63,7 +65,7 @@ $(document).ready(function() {
         $('#popupContainer').hide();
     };
 
-    function populate_playlist(playlist_id) {
+    function populate_playlist(playlist_id, playlist_uri) {
         var trackUris = getTrackUris();
 
         $.ajax({
@@ -73,6 +75,14 @@ $(document).ready(function() {
             data: {'playlistId': playlist_id, 'trackUris': JSON.stringify(trackUris)},
             success: function(response) {
                 closePopup()
+                alert("Tracks saved successfully!");
+
+                var redirectToPlaylist = confirm("Do you want to go to the playlist?");
+        
+                if (redirectToPlaylist) {
+                    // Redirect to the created playlist (replace the URL with your actual playlist URL)
+                    window.open(playlist_uri, '_blank');
+                }
             }
         });
     }

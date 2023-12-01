@@ -182,7 +182,7 @@
                     <label for="existingPlaylist" class="popup-label">Select Existing Playlist:</label>
                     <select id="existingPlaylist" class="popup-selector">
                         {% for playlist in playlists['items'] %}
-                            <option value="{{ playlist['id'] }}">{{ playlist['name'] }}</option>       
+                            <option value="{{ playlist['id'] }}" data-uri="{{ playlist['external_urls']['spotify'] }}">{{ playlist['name'] }}</option>       
                         {% endfor %}
                     </select>
                 </div>
